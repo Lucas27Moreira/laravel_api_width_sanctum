@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use App\Services\ApiRespose;
 
 class ClientController extends Controller
 {
@@ -13,7 +14,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return response()->json(Client::all(), 200);
+        return ApiRespose::success(Client::all());
     }
 
     /**
@@ -29,10 +30,11 @@ class ClientController extends Controller
 
         $client = Client::create($validated);
 
-        return response()->json([
-            'message' => 'Client created successfully',
-            'client' => $client
-        ], 201);
+        // return response()->json([
+        //     'message' => 'Client created successfully',
+        //     'client' => $client
+        // ], 201);
+        return ApiRespose::success($client);
 
         }
 
@@ -44,11 +46,9 @@ class ClientController extends Controller
         //show client by id
         $client = Client::find($id);
         if (!$client) {
-            return response()->json([
-                'message' => 'Client not found'
-            ], 404);
+            return ApiRespose::error('Client not found');
         }
-        return response()->json($client, 200);
+        return ApiRespose::success($client);
     }
 
     /**
@@ -67,12 +67,9 @@ class ClientController extends Controller
 
         if($client){
             $client->update($request->all());
-            return response()->json(
-                ['message'=> 'client updated successfully',
-                 'data'=> $client
-                ], 200);
+            return ApiRespose::success($client);
         }else {
-            return response()->json(['message'=> 'client not found'], 404);
+            return ApiRespose::error('client not found');
         }
     }
 
@@ -85,12 +82,9 @@ class ClientController extends Controller
         $client = client::find($id);
         if($client){
             $client->delete();
-            return response()->json(
-                [
-                    'message' => 'client deleted successfully',
-                ],200);
+            return ApiRespose::success('client deleted successfully');
         }else {
-            return response()->json(['message'=> 'client not found'],404);
+            return ApiRespose::error('client not found');
         }
     }
 }
