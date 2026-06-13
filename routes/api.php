@@ -8,9 +8,9 @@ use App\Services\ApiRespose;
 
 Route::get('/status', function () {
     return ApiRespose::success('API is working');
-});
+})->middleware('auth:sanctum');
 
-Route::apiResource('clients', ClientController::class);
+Route::apiResource('clients', ClientController::class)->middleware('auth:sanctum');
 
 // auth routes
 Route::post('/login',[AuthController::class, 'login']);
