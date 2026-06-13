@@ -14,6 +14,10 @@ class ClientController extends Controller
      */
     public function index()
     {
+        // check if the tokem allws this result
+        if(!auth()->user()->tokenCan('clients:list')){
+            return ApiRespose::error('Unauthorized', 401);
+        }
         return ApiRespose::success(Client::all());
     }
 
@@ -43,6 +47,11 @@ class ClientController extends Controller
      */
     public function show(string $id)
     {
+         // check if the tokem allws this result
+        if(!auth()->user()->tokenCan('clients:detail')){
+            return ApiRespose::error('Unauthorized', 401);
+        }
+
         //show client by id
         $client = Client::find($id);
         if (!$client) {
