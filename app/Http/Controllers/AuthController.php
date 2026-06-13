@@ -29,7 +29,8 @@ class AuthController extends Controller
         }
 
         $user = auth()->user();
-        $token = $user->createToken($user->name)->plainTextToken;
+        // $token = $user->createToken($user->name)->plainTextToken;
+        $token = $user->createToken($user->name, ['*'],now()->addHours())->plainTextToken;
 
         //return the access token for the api requests
         return ApiRespose::success([
